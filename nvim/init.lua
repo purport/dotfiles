@@ -13,6 +13,7 @@ require 'paq' {
   'hrsh7th/cmp-nvim-lsp';
   'hrsh7th/nvim-cmp';
   'nvim-lualine/lualine.nvim';
+  'tpope/vim-fugitive';
 }
 vim.g.tokyonight_italic_comments = false
 
