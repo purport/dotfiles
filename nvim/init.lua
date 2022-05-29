@@ -12,6 +12,34 @@ require 'paq' {
   'radenling/vim-dispatch-neovim';
   'hrsh7th/cmp-nvim-lsp';
   'hrsh7th/nvim-cmp';
+  'nvim-lualine/lualine.nvim';
+}
+vim.g.tokyonight_italic_comments = false
+
+local util = require("tokyonight.util")
+local wombat = require'lualine.themes.tokyonight'
+wombat.normal.a.bg = util.darken(wombat.normal.a.bg, 0.5)
+wombat.normal.b.bg = util.darken(wombat.normal.b.bg, 0.3)
+wombat.insert.a.bg = util.darken(wombat.insert.a.bg, 0.5)
+wombat.insert.b.bg = util.darken(wombat.insert.b.bg, 0.3)
+wombat.command.a.bg = util.darken(wombat.command.a.bg, 0.6)
+wombat.command.b.bg = util.darken(wombat.command.b.bg, 0.3)
+wombat.visual.a.bg = util.darken(wombat.visual.a.bg, 0.5)
+wombat.visual.b.bg = util.darken(wombat.visual.b.bg, 0.3)
+
+require('lualine').setup {
+  options = {
+    icons_enabled = false,
+    theme = wombat,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'filename','diagnostics'},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {'location'},
+  }
 }
 
 vim.o.completeopt = 'menu,menuone,noselect'
