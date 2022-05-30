@@ -2,6 +2,8 @@ local install_path = vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.system({'git', 'clone', '--depth=1', 'https://github.com/savq/paq-nvim.git', install_path})
 end
+vim.g.tokyonight_italic_comments = false
+vim.g.tokyonight_italic_keywords = false
 
 require 'paq' {
   'savq/paq-nvim';
@@ -14,8 +16,10 @@ require 'paq' {
   'hrsh7th/nvim-cmp';
   'nvim-lualine/lualine.nvim';
   'tpope/vim-fugitive';
+  'nvim-lua/popup.nvim';
+  'nvim-lua/plenary.nvim';
+  'nvim-telescope/telescope.nvim';
 }
-vim.g.tokyonight_italic_comments = false
 
 local util = require("tokyonight.util")
 local wombat = require'lualine.themes.tokyonight'
@@ -83,10 +87,10 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('v', 'a', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap('i', '<C-K>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-
   buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   buf_set_keymap('v', 'f', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
 end
@@ -136,6 +140,29 @@ require('nvim-terminal').setup({
 	disable_default_keymaps = true
 })
 
-local silent = { silent = true }
+local actions = require("telescope.actions")
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-h>"] = "which_key",
+        ["<esc>"] = actions.close
+      }
+    }
+  },
+  pickers = {
+  },
+  extensions = {
+  }
+}
+
+local silent = { silent = true, noremap = true }
 vim.api.nvim_set_keymap('n', '<leader>t', ':lua NTGlobal["terminal"]:toggle()<cr>', silent)
 vim.api.nvim_set_keymap('t', '<esc>', '<c-\\><c-n>', silent)
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-w><Left>', silent)
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-w><Right>', silent)
+vim.api.nvim_set_keymap('n', '<C-j>', '<C-w><Down>', silent)
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-w><Up>', silent)
+vim.api.nvim_set_keymap('n', '<Leader><Leader>', '<cmd>lua require("telescope.builtin").find_files()<cr>', silent)
+vim.api.nvim_set_keymap('n', '<Leader>g', '<cmd>lua require("telescope.builtin").live_grep()<cr>', silent)
+
