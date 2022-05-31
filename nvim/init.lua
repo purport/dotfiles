@@ -19,6 +19,8 @@ require 'paq' {
   'nvim-lua/popup.nvim';
   'nvim-lua/plenary.nvim';
   'nvim-telescope/telescope.nvim';
+  'numToStr/Comment.nvim';
+  'dstein64/vim-startuptime';
 }
 
 local util = require("tokyonight.util")
@@ -133,6 +135,46 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.signcolumn = 'yes'
 
+require('Comment').setup({
+  padding = true,
+  sticky = true,
+  ignore = nil,
+  toggler = {
+    ---Line-comment toggle keymap
+    line = 'gcc',
+    ---Block-comment toggle keymap
+    block = 'gbc',
+  },
+
+  ---LHS of operator-pending mappings in NORMAL + VISUAL mode
+  ---@type table
+  opleader = {
+    ---Line-comment keymap
+    line = 'gc',
+    ---Block-comment keymap
+    block = 'gb',
+  },
+
+  ---LHS of extra mappings
+  ---@type table
+  extra = {
+    above = nil,
+    below = nil,
+    eol = 'gcA',
+  },
+
+  ---Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
+  ---NOTE: If `mappings = false` then the plugin won't create any mappings
+  ---@type boolean|table
+  mappings = {
+    basic = false,
+    extra = false,
+    extended = false,
+  },
+  pre_hook = nil,
+  post_hook = nil,
+})
+
 require('nvim-terminal').setup({
 	window = {
 		position = 'botright'
@@ -163,6 +205,6 @@ vim.api.nvim_set_keymap('n', '<C-h>', '<C-w><Left>', silent)
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w><Right>', silent)
 vim.api.nvim_set_keymap('n', '<C-j>', '<C-w><Down>', silent)
 vim.api.nvim_set_keymap('n', '<C-k>', '<C-w><Up>', silent)
-vim.api.nvim_set_keymap('n', '<Leader><Leader>', '<cmd>lua require("telescope.builtin").find_files()<cr>', silent)
-vim.api.nvim_set_keymap('n', '<Leader>g', '<cmd>lua require("telescope.builtin").live_grep()<cr>', silent)
+vim.api.nvim_set_keymap('n', '<C-p>', '<cmd>lua require("telescope.builtin").find_files()<cr>', silent)
+vim.api.nvim_set_keymap('n', '<C-g>', '<cmd>lua require("telescope.builtin").live_grep()<cr>', silent)
 
