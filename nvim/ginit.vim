@@ -1,2 +1,2 @@
-GuiFont! Fira Code
-GuiRenderLigatures 0
+# GuiFont! Fira Code:10
+# GuiRenderLigatures 0
