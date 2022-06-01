@@ -11,7 +11,7 @@ local no_errors, error_msg = pcall(function()
 
   local time
   local profile_info
-  local should_profile = true
+  local should_profile = false
   if should_profile then
     local hrtime = vim.loop.hrtime
     profile_info = {}
@@ -98,7 +98,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
-    config = { "\27LJ\2\nA\2\0\4\1\3\0\a6\0\0\0009\0\1\0009\0\2\0-\2\0\0G\3\0\0A\0\1\1K\0\1\0\1¿\24nvim_buf_set_keymap\bapi\bvimA\2\0\4\1\3\0\a6\0\0\0009\0\1\0009\0\2\0-\2\0\0G\3\0\0A\0\1\1K\0\1\0\1¿\24nvim_buf_set_option\bapi\bvim√\5\1\2\v\0\25\0A3\2\0\0003\3\1\0005\4\2\0\18\5\2\0'\a\3\0'\b\4\0'\t\5\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\6\0'\t\a\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\b\0'\t\t\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\n\0'\t\v\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\f\0'\t\r\0\18\n\4\0B\5\5\1\18\5\2\0'\a\14\0'\b\15\0'\t\16\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\17\0'\t\18\0\18\n\4\0B\5\5\1\18\5\2\0'\a\19\0'\b\20\0'\t\18\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\21\0'\t\22\0\18\n\4\0B\5\5\1\18\5\2\0'\a\14\0'\b\23\0'\t\24\0\18\n\4\0B\5\5\0012\0\0ÄK\0\1\0000<cmd>lua vim.lsp.buf.range_formatting()<CR>\6f*<cmd>lua vim.lsp.buf.formatting()<CR>\14<leader>f\n<C-K>\6i.<cmd>lua vim.lsp.buf.signature_help()<CR>\6K1<cmd>lua vim.lsp.buf.range_code_action()<CR>\6a\6v+<cmd>lua vim.lsp.buf.code_action()<CR>\14<leader>a&<cmd>lua vim.lsp.buf.rename()<CR>\15<leader>rn,<cmd>lua vim.diagnostic.goto_next()<CR>\a]d,<cmd>lua vim.diagnostic.goto_prev()<CR>\a[d*<cmd>lua vim.lsp.buf.definition()<CR>\agd\6n\1\0\2\vsilent\2\fnoremap\2\0\0ú\5\1\0\r\0\"\0;6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0024\2\5\0005\3\3\0>\3\1\0025\3\4\0>\3\2\0025\3\5\0>\3\3\0025\3\6\0>\3\4\0026\3\a\0\18\5\2\0B\3\2\4X\6\nÄ6\b\b\0009\b\t\b9\b\n\b9\n\v\a5\v\f\0009\f\v\a=\f\r\v9\f\14\a=\f\14\vB\b\3\1E\6\3\3R\6Ù6\3\b\0009\3\15\0039\3\16\0035\5\17\0005\6\18\0=\2\19\6=\6\20\5B\3\2\0013\3\21\0006\4\0\0'\6\22\0B\4\2\0029\4\23\0046\6\b\0009\6\24\0069\6\25\0069\6\26\6B\6\1\0A\4\0\0029\5\27\0009\5\28\0055\a\30\0005\b\29\0=\b\31\a=\3 \a=\4!\aB\5\2\1K\0\1\0\17capabilities\14on_attach\bcmd\1\0\0\1\3\0\0\vclangd\20--enable-config\nsetup\vclangd\29make_client_capabilities\rprotocol\blsp\24update_capabilities\17cmp_nvim_lsp\0\nsigns\vactive\1\0\0\1\0\1\17virtual_text\1\vconfig\15diagnostic\ttext\vtexthl\1\0\1\nnumhl\5\tname\16sign_define\afn\bvim\vipairs\1\0\2\tname\23DiagnosticSignInfo\ttext\b‚Ñπ\1\0\2\tname\23DiagnosticSignHint\ttext\tüí°\1\0\2\tname\23DiagnosticSignWarn\ttext\b‚ö†\1\0\2\tname\24DiagnosticSignError\ttext\b‚ùå\19lspconfig.util\14lspconfig\frequire\0" },
+    config = { "\27LJ\2\nA\2\0\4\1\3\0\a6\0\0\0009\0\1\0009\0\2\0-\2\0\0G\3\0\0A\0\1\1K\0\1\0\1¿\24nvim_buf_set_keymap\bapi\bvimA\2\0\4\1\3\0\a6\0\0\0009\0\1\0009\0\2\0-\2\0\0G\3\0\0A\0\1\1K\0\1\0\1¿\24nvim_buf_set_option\bapi\bvim√\5\1\2\v\0\25\0A3\2\0\0003\3\1\0005\4\2\0\18\5\2\0'\a\3\0'\b\4\0'\t\5\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\6\0'\t\a\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\b\0'\t\t\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\n\0'\t\v\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\f\0'\t\r\0\18\n\4\0B\5\5\1\18\5\2\0'\a\14\0'\b\15\0'\t\16\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\17\0'\t\18\0\18\n\4\0B\5\5\1\18\5\2\0'\a\19\0'\b\20\0'\t\18\0\18\n\4\0B\5\5\1\18\5\2\0'\a\3\0'\b\21\0'\t\22\0\18\n\4\0B\5\5\1\18\5\2\0'\a\14\0'\b\23\0'\t\24\0\18\n\4\0B\5\5\0012\0\0ÄK\0\1\0000<cmd>lua vim.lsp.buf.range_formatting()<CR>\6f*<cmd>lua vim.lsp.buf.formatting()<CR>\14<leader>f\n<C-K>\6i.<cmd>lua vim.lsp.buf.signature_help()<CR>\6K1<cmd>lua vim.lsp.buf.range_code_action()<CR>\6a\6v+<cmd>lua vim.lsp.buf.code_action()<CR>\14<leader>a&<cmd>lua vim.lsp.buf.rename()<CR>\15<leader>rn,<cmd>lua vim.diagnostic.goto_next()<CR>\a]d,<cmd>lua vim.diagnostic.goto_prev()<CR>\a[d*<cmd>lua vim.lsp.buf.definition()<CR>\agd\6n\1\0\2\vsilent\2\fnoremap\2\0\0ú\5\1\0\r\0\"\0;6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0024\2\5\0005\3\3\0>\3\1\0025\3\4\0>\3\2\0025\3\5\0>\3\3\0025\3\6\0>\3\4\0026\3\a\0\18\5\2\0B\3\2\4X\6\nÄ6\b\b\0009\b\t\b9\b\n\b9\n\v\a5\v\f\0009\f\v\a=\f\r\v9\f\14\a=\f\14\vB\b\3\1E\6\3\3R\6Ù6\3\b\0009\3\15\0039\3\16\0035\5\17\0005\6\18\0=\2\19\6=\6\20\5B\3\2\0013\3\21\0006\4\0\0'\6\22\0B\4\2\0029\4\23\0046\6\b\0009\6\24\0069\6\25\0069\6\26\6B\6\1\0A\4\0\0029\5\27\0009\5\28\0055\a\30\0005\b\29\0=\b\31\a=\3 \a=\4!\aB\5\2\1K\0\1\0\17capabilities\14on_attach\bcmd\1\0\0\1\3\0\0\vclangd\20--enable-config\nsetup\vclangd\29make_client_capabilities\rprotocol\blsp\24update_capabilities\17cmp_nvim_lsp\0\nsigns\vactive\1\0\0\1\0\1\17virtual_text\1\vconfig\15diagnostic\ttext\vtexthl\1\0\1\nnumhl\5\tname\16sign_define\afn\bvim\vipairs\1\0\2\ttext\b‚Ñπ\tname\23DiagnosticSignInfo\1\0\2\ttext\tüí°\tname\23DiagnosticSignHint\1\0\2\ttext\b‚ö†\tname\23DiagnosticSignWarn\1\0\2\ttext\b‚ùå\tname\24DiagnosticSignError\19lspconfig.util\14lspconfig\frequire\0" },
     load_after = {
       ["nvim-cmp"] = true
     },
@@ -133,8 +133,8 @@ _G.packer_plugins = {
   },
   ["telescope.nvim"] = {
     commands = { "Telescope" },
-    config = { "\27LJ\2\n√\3\0\0\b\0\24\0'6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0029\1\3\0015\3\v\0005\4\t\0005\5\a\0005\6\4\0009\a\5\0=\a\6\6=\6\b\5=\5\n\4=\4\f\0034\4\0\0=\4\r\0034\4\0\0=\4\14\3B\1\2\0015\1\15\0006\2\16\0009\2\17\0029\2\18\2'\4\19\0'\5\20\0'\6\21\0\18\a\1\0B\2\5\0016\2\16\0009\2\17\0029\2\18\2'\4\19\0'\5\22\0'\6\23\0\18\a\1\0B\2\5\1K\0\1\0:<cmd>lua require(\"telescope.builtin\").live_grep()<cr>\n<C-g>;<cmd>lua require(\"telescope.builtin\").find_files()<cr>\n<C-p>\6n\20nvim_set_keymap\bapi\bvim\1\0\2\vsilent\2\fnoremap\2\15extensions\fpickers\rdefaults\1\0\0\rmappings\1\0\0\6i\1\0\0\n<esc>\nclose\1\0\1\n<C-h>\14which_key\nsetup\14telescope\22telescope.actions\frequire\0" },
-    keys = { { "", "<C-p>" }, { "", "<C-g>" } },
+    config = { "\27LJ\2\nù\4\0\0\b\0\26\0/6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0029\1\3\0015\3\v\0005\4\t\0005\5\a\0005\6\4\0009\a\5\0=\a\6\6=\6\b\5=\5\n\4=\4\f\0034\4\0\0=\4\r\0034\4\0\0=\4\14\3B\1\2\0015\1\15\0006\2\16\0009\2\17\0029\2\18\2'\4\19\0'\5\20\0'\6\21\0\18\a\1\0B\2\5\0016\2\16\0009\2\17\0029\2\18\2'\4\19\0'\5\22\0'\6\23\0\18\a\1\0B\2\5\0016\2\16\0009\2\17\0029\2\18\2'\4\19\0'\5\24\0'\6\25\0\18\a\1\0B\2\5\1K\0\1\0008<cmd>lua require(\"telescope.builtin\").buffers()<cr>\n<C-b>:<cmd>lua require(\"telescope.builtin\").live_grep()<cr>\n<C-g>;<cmd>lua require(\"telescope.builtin\").find_files()<cr>\n<C-p>\6n\20nvim_set_keymap\bapi\bvim\1\0\2\vsilent\2\fnoremap\2\15extensions\fpickers\rdefaults\1\0\0\rmappings\1\0\0\6i\1\0\0\n<esc>\nclose\1\0\1\n<C-h>\14which_key\nsetup\14telescope\22telescope.actions\frequire\0" },
+    keys = { { "", "<C-p>" }, { "", "<C-g>" }, { "", "<C-b>" } },
     loaded = false,
     needs_bufread = true,
     only_cond = false,
@@ -171,23 +171,18 @@ _G.packer_plugins = {
     only_cond = false,
     path = "C:\\My\\Share\\nvim-data\\site\\pack\\packer\\opt\\vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
-  },
-  ["vim-startuptime"] = {
-    loaded = true,
-    path = "C:\\My\\Share\\nvim-data\\site\\pack\\packer\\start\\vim-startuptime",
-    url = "https://github.com/dstein64/vim-startuptime"
   }
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: filetype.nvim
-time([[Config for filetype.nvim]], true)
-try_loadstring("\27LJ\2\n:\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\rfiletype\frequire\0", "config", "filetype.nvim")
-time([[Config for filetype.nvim]], false)
 -- Config for: tokyonight.nvim
 time([[Config for tokyonight.nvim]], true)
 try_loadstring("\27LJ\2\n:\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\27colorscheme tokyonight\bcmd\bvim\0", "config", "tokyonight.nvim")
 time([[Config for tokyonight.nvim]], false)
+-- Config for: filetype.nvim
+time([[Config for filetype.nvim]], true)
+try_loadstring("\27LJ\2\n:\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\rfiletype\frequire\0", "config", "filetype.nvim")
+time([[Config for filetype.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd lualine.nvim ]]
@@ -199,19 +194,20 @@ time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Focus lua require("packer.load")({'vim-dispatch'}, { cmd = "Focus", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Git lua require("packer.load")({'vim-fugitive'}, { cmd = "Git", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Dispatch lua require("packer.load")({'vim-dispatch'}, { cmd = "Dispatch", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Make lua require("packer.load")({'vim-dispatch'}, { cmd = "Make", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Focus lua require("packer.load")({'vim-dispatch'}, { cmd = "Focus", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Start lua require("packer.load")({'vim-dispatch'}, { cmd = "Start", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Start lua require("packer.load")({'vim-dispatch'}, { cmd = "Start", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 -- Keymap lazy-loads
 time([[Defining lazy-load keymaps]], true)
-vim.cmd [[noremap <silent> <C-p> <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>C-p>", prefix = "" }, _G.packer_plugins)<cr>]]
-vim.cmd [[noremap <silent> <leader>t <cmd>lua require("packer.load")({'nvim-terminal'}, { keys = "<lt>leader>t", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[noremap <silent> <C-g> <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>C-g>", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[noremap <silent> <C-p> <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>C-p>", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[noremap <silent> <C-b> <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>C-b>", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[noremap <silent> <leader>t <cmd>lua require("packer.load")({'nvim-terminal'}, { keys = "<lt>leader>t", prefix = "" }, _G.packer_plugins)<cr>]]
 time([[Defining lazy-load keymaps]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]

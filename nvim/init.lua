@@ -184,7 +184,7 @@ require('packer').startup({function(use)
     'nvim-telescope/telescope.nvim',
     opt = true,
     cmd = {'Telescope'},
-    keys = {'<C-p>', '<C-g>'},
+    keys = {'<C-p>', '<C-g>', '<C-b>'},
     requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' },
     config = function()
       local actions = require("telescope.actions")
@@ -205,9 +205,10 @@ require('packer').startup({function(use)
       local opts = { silent = true, noremap = true }
       vim.api.nvim_set_keymap('n', '<C-p>', '<cmd>lua require("telescope.builtin").find_files()<cr>', opts)
       vim.api.nvim_set_keymap('n', '<C-g>', '<cmd>lua require("telescope.builtin").live_grep()<cr>', opts)
+      vim.api.nvim_set_keymap('n', '<C-b>', '<cmd>lua require("telescope.builtin").buffers()<cr>', opts)
     end
   }
-  use 'dstein64/vim-startuptime'
+  -- use 'dstein64/vim-startuptime'
 
   if packer_bootstrap then
     require('packer').sync()
@@ -215,7 +216,7 @@ require('packer').startup({function(use)
 end,
 config = {
   profile = {
-    enable = true,
+    enable = false,
     threshold = 1 -- the amount in ms that a plugins load time must be over for it to be included in the profile
   }
 }})
