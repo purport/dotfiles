@@ -35,10 +35,19 @@ vim.o.textwidth = 80
 
 local opts = { silent = true, noremap = true }
 vim.api.nvim_set_keymap('t', '<esc>', '<c-\\><c-n>', opts)
+vim.api.nvim_set_keymap('t', '<C-h>', '<C-w><Left>', opts)
+vim.api.nvim_set_keymap('t', '<C-l>', '<C-w><Right>', opts)
+vim.api.nvim_set_keymap('t', '<C-j>', '<C-w><Down>', opts)
+vim.api.nvim_set_keymap('t', '<C-k>', '<C-w><Up>', opts)
 vim.api.nvim_set_keymap('n', '<C-h>', '<C-w><Left>', opts)
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w><Right>', opts)
 vim.api.nvim_set_keymap('n', '<C-j>', '<C-w><Down>', opts)
 vim.api.nvim_set_keymap('n', '<C-k>', '<C-w><Up>', opts)
+vim.api.nvim_set_keymap('n', '<M-.>', '<C-w>>', opts)
+vim.api.nvim_set_keymap('n', '<M-,>', '<C-w><', opts)
+vim.api.nvim_set_keymap('n', '<leader>=', '<cmd>vert res 87<CR>', opts)
+vim.api.nvim_set_keymap('n', '[f', '<cmd>cp<CR>', opts)
+vim.api.nvim_set_keymap('n', ']f', '<cmd>cn<CR>', opts)
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
@@ -75,7 +84,7 @@ require('packer').startup(function(use)
         },
         sections = {
           lualine_a = {'mode'},
-          lualine_b = {'filename','diagnostics'},
+          lualine_b = {{'filename',path=1},'diagnostics'},
           lualine_c = {},
           lualine_x = {},
           lualine_y = {},
@@ -154,6 +163,11 @@ require('packer').startup(function(use)
         },
       }
     end
+  }
+  use 'tpope/vim-dispatch'
+  use {
+    'radenling/vim-dispatch-neovim',
+    requires = { 'tpope/vim-dispatch' }
   }
 
   -- selectors
@@ -260,13 +274,9 @@ require('packer').startup(function(use)
           ),
         })
 
-      local on_attach_1 = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-      end
-      local on_attach_2 = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = true
+      local format_doc = function(client, bufnr, g)
         if client.server_capabilities.documentFormattingProvider then
-          local au_lsp = vim.api.nvim_create_augroup("eslint_lsp", { clear = true })
+          local au_lsp = vim.api.nvim_create_augroup(g, { clear = true })
           vim.api.nvim_create_autocmd("BufWritePre", {
             pattern = "*",
             callback = function()
@@ -276,11 +286,19 @@ require('packer').startup(function(use)
           })
         end
       end
+
       lspconfig.tsserver.setup {
-        on_attach = on_attach_1,
+        on_attach = function(client, bufnr)
+          -- disregarding the typescript formatter as I usually have
+          -- xo eslint setup which provides formatting.
+          client.server_capabilities.documentFormattingProvider = false
+        end,
       }
       lspconfig.eslint.setup {
-        on_attach = on_attach_2,
+        on_attach = function(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = true
+          format_doc(client, bufnr, "eslint_lsp")
+        end,
       }
       lspconfig.jsonls.setup {
         filetypes = {"json", "jsonc"},
@@ -311,6 +329,14 @@ require('packer').startup(function(use)
             }
           }
         }
+      }
+
+      lspconfig.clangd.setup {
+        on_attach = function(client, bufnr)
+          format_doc(client, bufnr, "clang_lsp")
+          vim.cmd([[let &makeprg='ninja -C .build -f ../build.ninja']])
+          vim.cmd([[compiler gcc]])
+        end,
       }
 
       vim.fn.sign_define('DiagnosticSignError', { text = "✗", texthl = "DiagnosticSignError", numhl = "" })
