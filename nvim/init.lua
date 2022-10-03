@@ -5,6 +5,7 @@ end
 
 vim.g.tokyonight_italic_comments = false
 vim.g.tokyonight_italic_keywords = false
+vim.o.autowrite = true
 vim.o.completeopt = 'menuone,noselect'
 
 vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
@@ -34,11 +35,6 @@ vim.o.signcolumn = 'yes'
 vim.o.textwidth = 80
 
 local opts = { silent = true, noremap = true }
-vim.api.nvim_set_keymap('t', '<esc>', '<c-\\><c-n>', opts)
-vim.api.nvim_set_keymap('t', '<C-h>', '<C-w><Left>', opts)
-vim.api.nvim_set_keymap('t', '<C-l>', '<C-w><Right>', opts)
-vim.api.nvim_set_keymap('t', '<C-j>', '<C-w><Down>', opts)
-vim.api.nvim_set_keymap('t', '<C-k>', '<C-w><Up>', opts)
 vim.api.nvim_set_keymap('n', '<C-h>', '<C-w><Left>', opts)
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w><Right>', opts)
 vim.api.nvim_set_keymap('n', '<C-j>', '<C-w><Down>', opts)
@@ -46,8 +42,9 @@ vim.api.nvim_set_keymap('n', '<C-k>', '<C-w><Up>', opts)
 vim.api.nvim_set_keymap('n', '<M-.>', '<C-w>>', opts)
 vim.api.nvim_set_keymap('n', '<M-,>', '<C-w><', opts)
 vim.api.nvim_set_keymap('n', '<leader>=', '<cmd>vert res 87<CR>', opts)
-vim.api.nvim_set_keymap('n', '[f', '<cmd>cp<CR>', opts)
-vim.api.nvim_set_keymap('n', ']f', '<cmd>cn<CR>', opts)
+vim.api.nvim_set_keymap('n', '[q', '<cmd>cp<CR>', opts)
+vim.api.nvim_set_keymap('n', ']q', '<cmd>cn<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>ccl<CR>', opts)
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
@@ -93,38 +90,6 @@ require('packer').startup(function(use)
       }
     end
   }
-  use {
-    's1n7ax/nvim-terminal',
-    config = function()
-      vim.o.hidden = true
-      require('nvim-terminal').setup({
-        window = {
-          position = 'botright',
-          split = 'sp',
-          width = 50,
-          height = 15,
-        },
-
-        disable_default_keymaps = false,
-        toggle_keymap = '<leader>t',
-        window_height_change_amount = 2,
-        window_width_change_amount = 2,
-        increase_width_keymap = '<leader><leader>+',
-        decrease_width_keymap = '<leader><leader>-',
-        increase_height_keymap = '<leader>+',
-        decrease_height_keymap = '<leader>-',
-        terminals = {
-          -- keymaps to open nth terminal
-          {keymap = '<leader>1'},
-          {keymap = '<leader>2'},
-          {keymap = '<leader>3'},
-          {keymap = '<leader>4'},
-          {keymap = '<leader>5'},
-        },
-      })
-    end,
-  }
-  use 'ThePrimeagen/vim-be-good'
   -- latex
   use {
     'ntessore/unicode-math.vim',
@@ -164,20 +129,31 @@ require('packer').startup(function(use)
       }
     end
   }
+  use 'tpope/vim-fugitive'
   use 'tpope/vim-dispatch'
   use {
     'radenling/vim-dispatch-neovim',
     requires = { 'tpope/vim-dispatch' }
   }
+  use {
+    'terrortylor/nvim-comment',
+    config = function()
+      require('nvim_comment').setup {}
+    end
+  }
 
   -- selectors
+  use { 'kyazdani42/nvim-web-devicons' }
+  use { 'nvim-telescope/telescope-file-browser.nvim' }
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter'},
+    requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', 'nvim-telescope/telescope-file-browser.nvim' },
     config = function()
-      local actions = require("telescope.actions")
-      require('telescope').setup{
+      local actions = require('telescope.actions')
+      local telescope = require('telescope')
+      telescope.setup{
         defaults = {
+          theme = 'dropdown',
           mappings = {
             i = {
               ["<C-h>"] = "which_key",
@@ -188,21 +164,34 @@ require('packer').startup(function(use)
         pickers = {
         },
         extensions = {
+          file_browser = {
+            theme = 'dropdown',
+            hijack_netrw = true
+          }
         }
       }
+      telescope.load_extension('file_browser')
+
       local opts = { silent = true, noremap = true }
-      vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>lua require("telescope.builtin").find_files()<cr>', opts)
+      vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>lua require("telescope.builtin").find_files({no_ignore = false, hidden = true})<cr>', opts)
       vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua require("telescope.builtin").git_files()<cr>', opts)
       vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua require("telescope.builtin").live_grep()<cr>', opts)
       vim.api.nvim_set_keymap('n', '<leader>b', '<cmd>lua require("telescope.builtin").buffers()<cr>', opts)
+      vim.api.nvim_set_keymap('n', '<leader>o', '<cmd>lua require("telescope").extensions.file_browser.file_browser({ path = "%:p:h", hidden = true, previewer = false, initial_mode = "normal", layout_config = { height = 40 } })<cr>', opts)
+    end
+  }
+  use {
+    'echasnovski/mini.nvim',
+    config = function()
+      require('mini.ai').setup({})
+      require('mini.surround').setup({})
     end
   }
   -- lsp completion
   use {
     'stevearc/dressing.nvim',
     config = function()
-      require('dressing').setup {
-      }
+      require('dressing').setup {}
     end
   }
   use 'neovim/nvim-lspconfig'
@@ -214,7 +203,6 @@ require('packer').startup(function(use)
     config = function()
       vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
         vim.lsp.handlers.hover, {
-          -- Use a sharp border with `FloatBorder` highlights
           border = "rounded"
         })
 
@@ -274,30 +262,27 @@ require('packer').startup(function(use)
           ),
         })
 
-      local format_doc = function(client, bufnr, g)
-        if client.server_capabilities.documentFormattingProvider then
-          local au_lsp = vim.api.nvim_create_augroup(g, { clear = true })
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            pattern = "*",
-            callback = function()
-              vim.lsp.buf.format()
-            end,
-            group = au_lsp,
-          })
-        end
-      end
+      -- local format_doc = function(client, bufnr, g)
+      --   if client.server_capabilities.documentFormattingProvider then
+      --     local au_lsp = vim.api.nvim_create_augroup(g, { clear = true })
+      --     vim.api.nvim_create_autocmd("BufWritePre", {
+      --       pattern = "*",
+      --       callback = function()
+      --         vim.lsp.buf.format()
+      --       end,
+      --       group = au_lsp,
+      --     })
+      --   end
+      -- end
 
       lspconfig.tsserver.setup {
         on_attach = function(client, bufnr)
-          -- disregarding the typescript formatter as I usually have
-          -- xo eslint setup which provides formatting.
           client.server_capabilities.documentFormattingProvider = false
         end,
       }
       lspconfig.eslint.setup {
         on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider = true
-          format_doc(client, bufnr, "eslint_lsp")
+          client.server_capabilities.documentFormattingProvider = false
         end,
       }
       lspconfig.jsonls.setup {
@@ -333,16 +318,24 @@ require('packer').startup(function(use)
 
       lspconfig.clangd.setup {
         on_attach = function(client, bufnr)
-          format_doc(client, bufnr, "clang_lsp")
-          vim.cmd([[let &makeprg='ninja -C .build -f ../build.ninja']])
-          vim.cmd([[compiler gcc]])
+          client.server_capabilities.documentFormattingProvider = false
         end,
       }
 
-      vim.fn.sign_define('DiagnosticSignError', { text = "✗", texthl = "DiagnosticSignError", numhl = "" })
-      vim.fn.sign_define('DiagnosticSignWarn', { text = "❗", texthl = "DiagnosticSignWarn", numhl = "" })
-      vim.fn.sign_define('DiagnosticSignInfo', { text = "❓", texthl = "DiagnosticSignInfo", numhl = "" })
-      vim.fn.sign_define('DiagnosticSignHint', { text = "✿", texthl = "DiagnosticSignHint", numhl = "" })
+      local pid = vim.fn.getpid()
+      local omnisharp_bin = "/home/purport/.local/omnisharp/OmniSharp"
+
+      lspconfig.omnisharp.setup {
+        cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+        on_attach = function(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+        end,
+      }
+
+      vim.fn.sign_define('DiagnosticSignError', { text = "✗", texthl = "DiagnosticSignError", numhl = "DiagnosticSignError" })
+      vim.fn.sign_define('DiagnosticSignWarn', { text = "", texthl = "DiagnosticSignWarn", numhl = "DiagnosticSignWarn" })
+      vim.fn.sign_define('DiagnosticSignInfo', { text = "❓", texthl = "DiagnosticSignInfo", numhl = "DiagnosticSignInfo" })
+      vim.fn.sign_define('DiagnosticSignHint', { text = "✿", texthl = "DiagnosticSignHint", numhl = "DiagnosticSignHint" })
       vim.diagnostic.config({
         virtual_text = false,
         signs = true,
@@ -366,10 +359,34 @@ require('packer').startup(function(use)
       vim.keymap.set('n', 'gd', telescope.lsp_definitions, opts)
       vim.keymap.set('n', 'gr', telescope.lsp_references, opts)
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+      vim.keymap.set('n', '<leader>k', vim.lsp.buf.signature_help, opts)
       vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
       vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, opts)
 
+    end
+  }
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    requires = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+      require("null-ls").setup({
+        sources = {
+          require("null-ls").builtins.formatting.csharpier
+        },
+        on_attach = function(client, bufnr)
+          if client.supports_method 'textDocument/formatting' then
+            vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr })
+              end,
+            })
+          end
+        end,
+      })
     end
   }
   -- zettlekasten
@@ -436,6 +453,38 @@ require('packer').startup(function(use)
           lualine = true,
         }
       })
+    end
+  }
+  use 'Issafalcon/neotest-dotnet'
+  use {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      'Issafalcon/neotest-dotnet'
+    },
+    config = function()
+      local lib = require("neotest.lib")
+      local DotnetNeotestAdapter = require("neotest-dotnet")
+      DotnetNeotestAdapter.root = lib.files.match_root_pattern("*.sln")
+
+      require("neotest").setup({
+        adapters = {
+          DotnetNeotestAdapter
+        },
+      })
+      local function run_test_file() require("neotest").run.run(vim.fn.expand('%')) end
+      local function run_test_suite() require("neotest").run.run({vim.fn.expand('%'), suite=true}) end
+      local function toggle_summary() require("neotest").summary.toggle() end
+      local function open_output() require("neotest").output.open() end
+
+      local opts = { silent = true, noremap = true }
+      -- vim.keymap.set('n', '<C-;><C-r>', run_test_file, opts)
+      vim.keymap.set('n', '<C-;><C-r>', run_test_file, opts)
+      vim.keymap.set('n', '<C-;><C-t>', run_test_suite, opts)
+      vim.keymap.set('n', '<C-;><C-s>', toggle_summary, opts)
+      vim.keymap.set('n', '<C-;><C-o>', open_output, opts)
     end
   }
 
