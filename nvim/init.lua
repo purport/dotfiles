@@ -3,8 +3,6 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
-vim.g.tokyonight_italic_comments = false
-vim.g.tokyonight_italic_keywords = false
 vim.o.autowrite = true
 vim.o.completeopt = 'menuone,noselect'
 
@@ -48,6 +46,7 @@ vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>ccl<CR>', opts)
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
+  use 'gerw/vim-HiLinkTrace'
   use {
     'nathom/filetype.nvim',
     config = function()
@@ -55,29 +54,14 @@ require('packer').startup(function(use)
     end
   }
   use {
-    'folke/tokyonight.nvim',
-    config = function()
-      vim.cmd[[colorscheme tokyonight]]
-    end
-  }
-  use {
     'nvim-lualine/lualine.nvim',
-    after='tokyonight.nvim',
     config = function()
-      local util = require("tokyonight.util")
-      local wombat = require'lualine.themes.tokyonight'
-      wombat.normal.a.bg = util.darken("#7aa2f7", 0.5)
-      wombat.normal.b.bg = util.darken("#3b4261", 0.3)
-      wombat.insert.a.bg = util.darken("#9ece6a", 0.5)
-      wombat.insert.b.bg = util.darken("#3b4261", 0.3)
-      wombat.command.a.bg = util.darken("#e0af68", 0.6)
-      wombat.command.b.bg = util.darken("#3b4261", 0.3)
-      wombat.visual.a.bg = util.darken("#bb9af7", 0.5)
-      wombat.visual.b.bg = util.darken("#3b4261", 0.3)
+      local theme = require('theme').setup()
+
       require('lualine').setup {
         options = {
           icons_enabled = false,
-          theme = wombat,
+          theme = theme.lualine,
         },
         sections = {
           lualine_a = {'mode'},
@@ -100,6 +84,7 @@ require('packer').startup(function(use)
   -- programming language things
   use 'nvim-lua/popup.nvim'
   use 'nvim-lua/plenary.nvim'
+  use 'nvim-treesitter/playground'
   use {
     'nvim-treesitter/nvim-treesitter',
     run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
@@ -108,6 +93,7 @@ require('packer').startup(function(use)
         -- A list of parser names, or "all"
         ensure_installed = {
           "c",
+          "c_sharp",
           "julia",
           "markdown_inline",
           "markdown",
@@ -126,6 +112,24 @@ require('packer').startup(function(use)
         indent = {
           enable = true,
         },
+        playground = {
+          enable = true,
+          disable = {},
+          updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+          persist_queries = false, -- Whether the query persists across vim sessions
+          keybindings = {
+            toggle_query_editor = 'o',
+            toggle_hl_groups = 'i',
+            toggle_injected_languages = 't',
+            toggle_anonymous_nodes = 'a',
+            toggle_language_display = 'I',
+            focus_language = 'f',
+            unfocus_language = 'F',
+            update = 'R',
+            goto_node = '<cr>',
+            show_help = '?',
+          },
+        }
       }
     end
   }
@@ -418,41 +422,6 @@ require('packer').startup(function(use)
       vim.api.nvim_set_keymap("v", "<leader>zf", ":'<,'>ZkMatch<CR>", opts)
       vim.api.nvim_set_keymap("v", "<leader>zl", ":ZkLinks", opts)
       vim.api.nvim_set_keymap("v", "<leader>zb", ":ZkBacklinks", opts)
-    end
-  }
-  -- writing
-  use {
-    "Pocco81/TrueZen.nvim",
-    config = function()
-      local true_zen = require("true-zen")
-      true_zen.setup({
-        modes = { -- configurations per mode
-          ataraxis = {
-            shade = "dark", -- if `dark` then dim the padding windows, otherwise if it's `light` it'll brighten said windows
-            backdrop = 0, -- percentage by which padding windows should be dimmed/brightened. Must be a number between 0 and 1. Set to 0 to keep the same background color
-            minimum_writing_area = { -- minimum size of main window
-              width = 84,
-              height = 44,
-            },
-            quit_untoggles = true, -- type :q or :qa to quit Ataraxis mode
-            padding = { -- padding windows
-              left = 52,
-              right = 52,
-              top = 0,
-              bottom = 0,
-            },
-            callbacks = { -- run functions when opening/closing Ataraxis mode
-              open_pre = nil,
-              open_pos = nil,
-              close_pre = nil,
-              close_pos = nil
-            },
-          },
-        },
-        integrations = {
-          lualine = true,
-        }
-      })
     end
   }
   use 'Issafalcon/neotest-dotnet'
