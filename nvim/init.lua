@@ -217,6 +217,11 @@ require('packer').startup(function(use)
 
       local cmp = require('cmp')
       cmp.setup({
+        completion = {
+          keyword_length = 2,
+          autocomplete = false,
+        },
+        preselect = false,
         window = {
           completion = { -- rounded border; thin-style scrollbar
             border = 'single',
@@ -233,7 +238,7 @@ require('packer').startup(function(use)
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
@@ -261,7 +266,7 @@ require('packer').startup(function(use)
       local lspconfig = require('lspconfig')
       lspconfig.util.default_config = vim.tbl_deep_extend('force',
         lspconfig.util.default_config, {
-          capabilities = require('cmp_nvim_lsp').update_capabilities(
+          capabilities = require('cmp_nvim_lsp').default_capabilities(
             vim.lsp.protocol.make_client_capabilities()
           ),
         })
@@ -280,11 +285,6 @@ require('packer').startup(function(use)
       -- end
 
       lspconfig.tsserver.setup {
-        on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider = false
-        end,
-      }
-      lspconfig.eslint.setup {
         on_attach = function(client, bufnr)
           client.server_capabilities.documentFormattingProvider = false
         end,
@@ -320,7 +320,10 @@ require('packer').startup(function(use)
         }
       }
 
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.offsetEncoding = { "utf-16" }
       lspconfig.clangd.setup {
+        capabilities = capabilities,
         on_attach = function(client, bufnr)
           client.server_capabilities.documentFormattingProvider = false
         end,
@@ -331,6 +334,12 @@ require('packer').startup(function(use)
 
       lspconfig.omnisharp.setup {
         cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+        on_attach = function(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+        end,
+      }
+
+      lspconfig.gopls.setup {
         on_attach = function(client, bufnr)
           client.server_capabilities.documentFormattingProvider = false
         end,
@@ -376,7 +385,15 @@ require('packer').startup(function(use)
       local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
       require("null-ls").setup({
         sources = {
-          require("null-ls").builtins.formatting.csharpier
+          require("null-ls").builtins.formatting.csharpier,
+          require("null-ls").builtins.formatting.clang_format,
+          require("null-ls").builtins.formatting.prettier,
+          require("null-ls").builtins.formatting.goimports_reviser.with({
+            args = {
+              "-rm-unused", "-set-alias", "-format",
+              "-output", "stdout", "$FILENAME"
+            },
+          }),
         },
         on_attach = function(client, bufnr)
           if client.supports_method 'textDocument/formatting' then
