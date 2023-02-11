@@ -73,7 +73,7 @@ end
 local light_pink    = hsl(0, 100, 84);
 local deep_champagne= hsl(33, 100, 82);
 local lemon_yellow  = hsl(62, 100, 86);
-local tea_green     = hsl(110, 100, 87);
+local tea_green     = hsl(138, 30, 55);
 local electric_blue = hsl(185, 100, 80);
 local baby_blue     = hsl(217, 100, 81);
 local blue_purple   = hsl(249, 100, 85);
@@ -114,6 +114,7 @@ local colorscheme = {
 
   Identifier    = {baby_blue},
   Function      = {link='Identifier'},
+  ['@function.call'] = {link='Identifier'},
 
   PreProc       = {desaturate(darken(lemon_yellow, 10), 40)},
   Include       = {link='PreProc'},
@@ -122,7 +123,7 @@ local colorscheme = {
   PreCondit     = {link='PreProc'},
 
   Type          = {mauve},
-  StorageClass  = {link='Type'},
+  StorageClass  = {desaturate(darken(mauve, 20), 80)},
   Structure     = {link='Type'},
   Typedef       = {link='Type'},
 
@@ -136,13 +137,21 @@ local colorscheme = {
   Comment       = {lighten(bg, 40)},
 
   TSConstructor = {baby_blue},
+  ['@constructor'] = {baby_blue},
   TSOperator    = {lemon_yellow},
-  TSVariableBuiltin = {desaturate(darken(tea_green, 50), 70)},
+  ['@operator'] = {lemon_yellow},
+  TSVariableBuiltin = {tea_green},
+  ['@variable.builtin'] = {tea_green},
   TSConstantBuiltin = {tea_green},
+  ['@constant.builtin'] = {tea_green},
   TSKeywordReturn = {lighten(light_pink, 3)},
+  ['@keyword.return'] = {lighten(light_pink, 3)},
   TSParameter = {link='Normal'},
+  ['@parameter'] = {link='Normal'},
   TSVariable = {link='Normal'},
+  ['@variable'] = {link='Normal'},
   TSField = {link='Normal'},
+  ['@field'] = {link='Normal'},
 }
 
 local colors = {
